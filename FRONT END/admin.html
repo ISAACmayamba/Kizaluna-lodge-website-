@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Kizaluna Lodge</title>
+    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+            margin-top: 60px;
+        }
+        
+        .admin-sidebar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+        }
+        
+        .admin-sidebar ul {
+            list-style: none;
+        }
+        
+        .admin-sidebar li {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-sidebar li:hover,
+        .admin-sidebar li.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-main {
+            padding: 2rem;
+            background-color: var(--light-color);
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .dashboard-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .dashboard-card p {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .admin-table {
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .admin-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-checked_in {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-small {
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-edit {
+            background-color: #ffc107;
+            color: #000;
+        }
+        
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-confirm {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-view {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .form-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .filter-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        }
+        
+        .login-box {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        .login-box h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen (Initially shown) -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <h2><i class="fas fa-mountain"></i> Kizaluna Lodge Admin</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Admin Dashboard (Initially hidden) -->
+    <div id="adminDashboard" style="display: none;">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">
+                    <h1><i class="fas fa-mountain"></i> Kizaluna Admin</h1>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">View Site</a></li>
+                    <li><a href="#" id="adminLogout">Logout</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Admin Container -->
+        <div class="admin-container">
+            <!-- Sidebar -->
+            <div class="admin-sidebar">
+                <ul>
+                    <li class="active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </li>
+                    <li data-section="bookings">
+                        <i class="fas fa-calendar-check"></i> Bookings
+                    </li>
+                    <li data-section="rooms">
+                        <i class="fas fa-bed"></i> Rooms
+                    </li>
+                    <li data-section="guests">
+                        <i class="fas fa-users"></i> Guests
+                    </li>
+                    <li data-section="reports">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </li>
+                    <li data-section="staff">
+                        <i class="fas fa-user-tie"></i> Staff
+                    </li>
+                    <li data-section="settings">
+                        <i class="fas fa-cog"></i> Settings
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="admin-main">
+                <!-- Dashboard Section -->
+                <div id="dashboardSection">
+                    <h2>Dashboard Overview</h2>
+                    <div class="dashboard-cards">
+                        <div class="dashboard-card">
+                            <h3>Today's Check-ins</h3>
+                            <p id="todayCheckins">3</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Occupancy Rate</h3>
+                            <p id="occupancyRate">85%</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Monthly Revenue</h3>
+                            <p id="monthlyRevenue">$25,430</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Pending Bookings</h3>
+                            <p id="pendingBookings">7</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Recent Bookings</h3>
+                        <div class="admin-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Guest Name</th>
+                                        <th>Room</th>
+                                        <th>Check-in</th>
+                                        <th>Check-out</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentBookings">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bookings Section -->
+                <div id="bookingsSection" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2>Manage Bookings</h2>
+                        <button class="btn-primary" onclick="showBookingModal()">
+                            <i class="fas fa-plus"></i> New Booking
+                        </button>
+                    </div>
+                    
+                    <div class="filter-bar">
+                        <select id="bookingFilter">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="checked_in">Checked-in</option>
+                            <option value="checked_out">Checked-out</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <input type="date" id="bookingDateFilter" placeholder="Filter by date">
+                        <button class="btn-secondary" onclick="filterBookings()">Filter</button>
+                        <button class="btn-secondary" onclick="resetBookingFilter()">Reset</button>
+                    </div>
+                    
+                    <div class="admin-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Booking Ref</th>
+                                    <th>Guest</th>
+                                    <th>Room</th>
+                                    <th>Dates</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Payment</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookingsTable">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Rooms Section -->
+                <div id="roomsSection" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2>Room Management</h2>
+                        <button class="btn-primary" onclick="showRoomModal()">
+                            <i class="fas fa-plus"></i> Add Room
+                        </button>
+                    </div>
+                    
+                    <div class="rooms-grid" id="adminRoomsGrid">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+                
+                <!-- Guests Section -->
+                <div id="guestsSection" style="display: none;">
+                    <h2>Guest Management</h2>
+                    <div class="admin-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Last Stay</th>
+                                    <th>Total Stays</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guestsTable">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Reports Section -->
+                <div id="reportsSection" style="display: none;">
+                    <h2>Reports & Analytics</h2>
+                    <div class="filter-bar">
+                        <select id="reportType">
+                            <option value="revenue">Revenue Report</option>
+                            <option value="occupancy">Occupancy Report</option>
+                            <option value="guest">Guest Analytics</option>
+                            <option value="room">Room Performance</option>
+                        </select>
+                        <input type="month" id="reportMonth" value="2024-01">
+                        <button class="btn-primary" onclick="generateReport()">Generate Report</button>
+                        <button class="btn-secondary" onclick="exportReport()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="reportChart" height="300"></canvas>
+                    </div>
+                    
+                    <div class="admin-table">
+                        <table id="reportTable">
+                            <!-- Dynamic content -->
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Staff Section -->
+                <div id="staffSection" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2>Staff Management</h2>
+                        <button class="btn-primary" onclick="showStaffModal()">
+                            <i class="fas fa-plus"></i> Add Staff
+                        </button>
+                    </div>
+                    
+                    <div class="admin-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Last Login</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffTable">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Settings Section -->
+                <div id="settingsSection" style="display: none;">
+                    <h2>Settings</h2>
+                    <div class="settings-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div class="setting-card" style="background: white; padding: 1.5rem; border-radius: 10px; box-shadow: var(--shadow);">
+                            <h3>General Settings</h3>
+                            <div class="form-group">
+                                <label>Lodge Name</label>
+                                <input type="text" name="lodgeName" value="Kizaluna Lodge">
+                            </div>
+                            <div class="form-group">
+                                <label>Check-in Time</label>
+                                <input type="time" name="checkInTime" value="15:00">
+                            </div>
+                            <div class="form-group">
+                                <label>Check-out Time</label>
+                                <input type="time" name="checkOutTime" value="11:00">
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card" style="background: white; padding: 1.5rem; border-radius: 10px; box-shadow: var(--shadow);">
+                            <h3>Email Notifications</h3>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" checked> Send booking confirmations
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" checked> Send check-in reminders
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox"> Send promotional emails
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card" style="background: white; padding: 1.5rem; border-radius: 10px; box-shadow: var(--shadow);">
+                            <h3>Payment Settings</h3>
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select name="currency">
+                                    <option>USD ($)</option>
+                                    <option>EUR (€)</option>
+                                    <option>GBP (£)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tax Rate (%)</label>
+                                <input type="number" name="taxRate" value="10" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <button class="btn-primary" id="saveSettings">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="form-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Booking</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="newBookingForm">
+                <div class="form-group">
+                    <label>Guest Name</label>
+                    <input type="text" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Room Modal -->
+    <div id="roomModal" class="form-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Room</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="newRoomForm">
+                <div class="form-group">
+                    <label>Room Number</label>
+                    <input type="text" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Room</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Staff Modal -->
+    <div id="staffModal" class="form-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Staff Member</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="newStaffForm">
+                <div class="form-group">
+                    <label>Staff Name</label>
+                    <input type="text" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Staff</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Load Chart.js first -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Then load admin.js which uses Chart.js -->
+    <script src="admin.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

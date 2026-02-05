@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Stay - Kizaluna Lodge</title>
+    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .booking-progress {
+            margin: 100px auto 2rem;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+        .booking-progress::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #ddd;
+            z-index: 1;
+        }
+        .progress-step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            background: #ddd;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        .step-circle.active {
+            background: var(--primary-color);
+        }
+        .step-text {
+            font-size: 0.9rem;
+        }
+        
+        .booking-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .room-option {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .room-option:hover {
+            border-color: var(--secondary-color);
+        }
+        
+        .room-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(44, 85, 48, 0.05);
+        }
+        
+        .policy-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <h1><i class="fas fa-mountain"></i> Kizaluna Lodge</h1>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="Rooms.html">Rooms</a></li>
+                <li><a href="bookings.html" class="active">Book Now</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin.html" class="admin-link">Admin</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Booking Progress -->
+    <div class="container">
+        <div class="booking-progress">
+            <div class="progress-step">
+                <div class="step-circle active">1</div>
+                <div class="step-text">Dates & Guests</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">2</div>
+                <div class="step-text">Select Room</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">3</div>
+                <div class="step-text">Guest Details</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">4</div>
+                <div class="step-text">Confirmation</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Form Section -->
+    <section class="booking-form-section">
+        <div class="container">
+            <h1 class="section-title">Book Your Mountain Escape</h1>
+            
+            <!-- Step 1: Dates & Guests -->
+            <div id="step1" class="booking-step">
+                <div class="booking-form">
+                    <h3>When would you like to stay?</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkIn"><i class="fas fa-calendar-alt"></i> Check-in Date</label>
+                            <input type="date" id="checkIn" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkOut"><i class="fas fa-calendar-alt"></i> Check-out Date</label>
+                            <input type="date" id="checkOut" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adults"><i class="fas fa-user"></i> Adults</label>
+                            <select id="adults" required>
+                                <option value="1">1 Adult</option>
+                                <option value="2" selected>2 Adults</option>
+                                <option value="3">3 Adults</option>
+                                <option value="4">4 Adults</option>
+                                <option value="5">5+ Adults</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="children"><i class="fas fa-child"></i> Children</label>
+                            <select id="children">
+                                <option value="0" selected>0 Children</option>
+                                <option value="1">1 Child</option>
+                                <option value="2">2 Children</option>
+                                <option value="3">3 Children</option>
+                                <option value="4">4+ Children</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="roomType"><i class="fas fa-bed"></i> Room Type Preference</label>
+                        <select id="roomType">
+                            <option value="">Any Room Type</option>
+                            <option value="standard">Standard Room</option>
+                            <option value="deluxe">Deluxe Room</option>
+                            <option value="suite">Suite</option>
+                            <option value="family">Family Suite</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="nextStep(2)" class="btn-primary" style="width: 100%; margin-top: 2rem;">
+                        Check Availability <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Select Room -->
+            <div id="step2" class="booking-step" style="display: none;">
+                <div class="booking-form">
+                    <h3>Available Rooms</h3>
+                    <p>Select your preferred room:</p>
+                    
+                    <div id="availableRooms">
+                        <!-- Dynamic content -->
+                        <div style="text-align: center; padding: 2rem;">
+                            <p>Please select dates first to see available rooms.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button onclick="prevStep(1)" class="btn-secondary" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button onclick="nextStep(3)" class="btn-primary" style="flex: 1;" disabled id="nextStep2">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Guest Details -->
+            <div id="step3" class="booking-step" style="display: none;">
+                <div class="booking-form">
+                    <h3>Guest Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="guestName">Full Name *</label>
+                            <input type="text" id="guestName" placeholder="John Smith" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guestEmail">Email Address *</label>
+                            <input type="email" id="guestEmail" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="guestPhone">Phone Number *</label>
+                            <input type="tel" id="guestPhone" placeholder="+1 (555) 123-4567" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guestCountry">Country</label>
+                            <input type="text" id="guestCountry" placeholder="United States">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guestAddress">Address</label>
+                        <textarea id="guestAddress" placeholder="123 Street, City, State, ZIP"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="specialRequests">Special Requests</label>
+                        <textarea id="specialRequests" placeholder="Any special requirements or preferences..."></textarea>
+                        <small>We will try our best to accommodate your requests.</small>
+                    </div>
+                    
+                    <h4 style="margin-top: 2rem;">Payment Method</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <select id="paymentMethod" required>
+                                <option value="">Select Payment Method</option>
+                                <option value="credit_card">Credit Card</option>
+                                <option value="paypal">PayPal</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="cash">Pay at Property</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button onclick="prevStep(2)" class="btn-secondary" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button onclick="nextStep(4)" class="btn-primary" style="flex: 1;">
+                            Review Booking <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Confirmation -->
+            <div id="step4" class="booking-step" style="display: none;">
+                <div class="booking-form">
+                    <h3>Review Your Booking</h3>
+                    
+                    <div class="booking-summary" id="finalSummary">
+                        <!-- Dynamic content -->
+                    </div>
+                    
+                    <div class="policy-box">
+                        <h4><i class="fas fa-info-circle"></i> Booking Policy</h4>
+                        <ul style="margin: 0.5rem 0 0 1rem;">
+                            <li>Free cancellation up to 7 days before check-in</li>
+                            <li>50% refund for cancellations within 7 days</li>
+                            <li>No refund for no-shows or same-day cancellations</li>
+                            <li>Check-in: 3:00 PM | Check-out: 11:00 AM</li>
+                            <li>Early check-in/late check-out subject to availability</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: start; gap: 10px;">
+                            <input type="checkbox" id="terms" required style="margin-top: 5px;">
+                            <span>I agree to the <a href="#" style="color: var(--primary-color);">Terms & Conditions</a> and <a href="#" style="color: var(--primary-color);">Privacy Policy</a>. I understand that my credit card may be charged a deposit according to the cancellation policy.</span>
+                        </label>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button onclick="prevStep(3)" class="btn-secondary" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button onclick="submitBooking()" class="btn-primary" style="flex: 2;" id="submitBookingBtn">
+                            <i class="fas fa-check"></i> Confirm Booking
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Message -->
+            <div id="successMessage" style="display: none;">
+                <div class="booking-form" style="text-align: center; padding: 3rem;">
+                    <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                    <h2>Booking Confirmed!</h2>
+                    <p>Thank you for choosing Kizaluna Lodge.</p>
+                    <p id="bookingReference" style="font-size: 1.2rem; font-weight: bold; margin: 1rem 0;"></p>
+                    <p>A confirmation email has been sent to your email address.</p>
+                    <div style="margin-top: 2rem;">
+                        <a href="index.html" class="btn-primary">Return to Home</a>
+                        <a href="#" class="btn-secondary" onclick="printBooking()" style="margin-left: 1rem;">
+                            <i class="fas fa-print"></i> Print Confirmation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kizaluna Lodge</h3>
+                    <p>Mountain Valley Road, Serenity Hills</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <p>Email: info@kizalunalodge.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="Rooms.html">Rooms</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kizaluna Lodge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="booking.js"></script>
+    <script>
+        // Navigation and UI functions for multi-step booking form
+        
+        function nextStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`step${i}`).style.display = 'none';
+            }
+            
+            // Show current step
+            document.getElementById(`step${step}`).style.display = 'block';
+            
+            // Update progress circles
+            updateProgress(step);
+            
+            // If going to step 2, check availability
+            if (step === 2) {
+                if (window.checkAvailability && typeof window.checkAvailability === 'function') {
+                    window.checkAvailability();
+                }
+            }
+            
+            // If going to step 4, update summary
+            if (step === 4) {
+                updateSummary();
+            }
+        }
+        
+        function prevStep(step) {
+            nextStep(step);
+        }
+        
+        function updateProgress(currentStep) {
+            const circles = document.querySelectorAll('.step-circle');
+            circles.forEach((circle, index) => {
+                if (index + 1 <= currentStep) {
+                    circle.classList.add('active');
+                } else {
+                    circle.classList.remove('active');
+                }
+            });
+        }
+        
+        
+        function updateSummary() {
+            // Get booking data from the booking.js module
+            const checkIn = document.getElementById('checkIn').value;
+            const checkOut = document.getElementById('checkOut').value;
+            const adults = document.getElementById('adults').value;
+            const children = document.getElementById('children').value;
+            
+            if (!checkIn || !checkOut) return;
+            
+            const checkInDate = new Date(checkIn);
+            const checkOutDate = new Date(checkOut);
+            const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+            
+            // Get room price from selected room or use default
+            const roomPrice = window.bookingData?.roomPrice || 199.99;
+            const total = roomPrice * nights;
+            const tax = total * 0.1; // 10% tax
+            const finalTotal = total + tax;
+            
+            document.getElementById('finalSummary').innerHTML = `
+                <div class="summary-item">
+                    <span>Dates:</span>
+                    <span>${checkIn} to ${checkOut} (${nights} nights)</span>
+                </div>
+                <div class="summary-item">
+                    <span>Guests:</span>
+                    <span>${adults} Adult${adults > 1 ? 's' : ''}, ${children} Child${children != 1 ? 'ren' : ''}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Room:</span>
+                    <span>${window.selectedRoom ? 'Selected Room' : 'Deluxe Mountain Suite'}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Room Rate:</span>
+                    <span>$${roomPrice.toFixed(2)} × ${nights} nights</span>
+                </div>
+                <div class="summary-item">
+                    <span>Subtotal:</span>
+                    <span>$${total.toFixed(2)}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Tax (10%):</span>
+                    <span>$${tax.toFixed(2)}</span>
+                </div>
+                <div class="summary-item" style="border-bottom: none;">
+                    <span><strong>Total:</strong></span>
+                    <span class="total-price">$${finalTotal.toFixed(2)}</span>
+                </div>
+            `;
+        }
+        
+        
+        async function submitBooking() {
+            const submitBtn = document.getElementById('submitBookingBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Generate booking reference
+                const bookingRef = 'KL-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
+                
+                // Show success message
+                document.getElementById('step4').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('bookingReference').textContent = `Booking Reference: ${bookingRef}`;
+                
+                // Update progress to completed
+                updateProgress(5);
+                
+                // Send confirmation email (simulated)
+                console.log('Booking confirmed. Email sent to:', document.getElementById('guestEmail').value);
+                
+            } catch (error) {
+                showNotification('Error submitting booking. Please try again.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Booking';
+            }
+        }
+        
+        function printBooking() {
+            window.print();
+        }
+        
+        function showNotification(message, type) {
+            alert(message); // Simple alert for now
+        }
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

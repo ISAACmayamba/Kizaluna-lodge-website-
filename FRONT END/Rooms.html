@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms & Suites - Kizaluna Lodge</title>
+    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <h1><i class="fas fa-mountain"></i> Kizaluna Lodge</h1>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="Rooms.html" class="active">Rooms</a></li>
+                <li><a href="bookings.html">Book Now</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin.html" class="admin-link">Admin</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Rooms Header -->
+    <section class="rooms-header">
+        <div class="container">
+            <h1>Our Rooms & Suites</h1>
+            <p>Luxurious accommodations with breathtaking mountain views</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-form">
+                <select id="roomTypeFilter">
+                    <option value="">All Room Types</option>
+                    <option value="standard">Standard Room</option>
+                    <option value="deluxe">Deluxe Room</option>
+                    <option value="suite">Suite</option>
+                    <option value="family">Family Suite</option>
+                </select>
+                
+                <select id="capacityFilter">
+                    <option value="">Any Capacity</option>
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4+ Guests</option>
+                </select>
+                
+                <select id="priceFilter">
+                    <option value="">Price Range</option>
+                    <option value="0-150">$0 - $150</option>
+                    <option value="151-250">$151 - $250</option>
+                    <option value="251-400">$251 - $400</option>
+                    <option value="401+">$401+</option>
+                </select>
+                
+                <button onclick="filterRooms()" class="btn-primary">Filter Rooms</button>
+                <button onclick="resetFilters()" class="btn-secondary">Reset</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Rooms -->
+    <section class="featured-rooms">
+        <div class="container">
+            <h2 class="section-title">All Accommodations</h2>
+            <div class="rooms-grid" id="allRooms">
+                <!-- Dynamic content from JS -->
+            </div>
+            
+            <!-- Room Type Descriptions -->
+            <div class="room-types-info" style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid #eee;">
+                <h2 class="section-title">Room Types</h2>
+                <div class="room-type-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div class="room-type-card" style="background: white; padding: 2rem; border-radius: 10px; box-shadow: var(--shadow);">
+                        <h3><i class="fas fa-bed" style="color: var(--primary-color); margin-right: 10px;"></i> Standard Rooms</h3>
+                        <p>Perfect for solo travelers or couples. Cozy and comfortable with all essential amenities.</p>
+                        <ul style="margin-top: 1rem;">
+                            <li>25-30 sqm rooms</li>
+                            <li>King or Queen bed</li>
+                            <li>Mountain or Garden view</li>
+                            <li>Starting at $119/night</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="room-type-card" style="background: white; padding: 2rem; border-radius: 10px; box-shadow: var(--shadow);">
+                        <h3><i class="fas fa-star" style="color: var(--primary-color); margin-right: 10px;"></i> Deluxe Rooms</h3>
+                        <p>Spacious rooms with upgraded amenities and panoramic mountain views.</p>
+                        <ul style="margin-top: 1rem;">
+                            <li>35-40 sqm rooms</li>
+                            <li>Extra seating area</li>
+                            <li>Premium amenities</li>
+                            <li>Starting at $189/night</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="room-type-card" style="background: white; padding: 2rem; border-radius: 10px; box-shadow: var(--shadow);">
+                        <h3><i class="fas fa-crown" style="color: var(--primary-color); margin-right: 10px;"></i> Suites</h3>
+                        <p>Luxurious suites with separate living areas, perfect for extended stays.</p>
+                        <ul style="margin-top: 1rem;">
+                            <li>50+ sqm suites</li>
+                            <li>Separate living room</li>
+                            <li>Executive amenities</li>
+                            <li>Starting at $299/night</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="room-type-card" style="background: white; padding: 2rem; border-radius: 10px; box-shadow: var(--shadow);">
+                        <h3><i class="fas fa-users" style="color: var(--primary-color); margin-right: 10px;"></i> Family Suites</h3>
+                        <p>Perfect for families, with extra space and child-friendly amenities.</p>
+                        <ul style="margin-top: 1rem;">
+                            <li>55+ sqm suites</li>
+                            <li>Multiple bedrooms</li>
+                            <li>Family-friendly features</li>
+                            <li>Starting at $249/night</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Amenities Section -->
+            <div class="amenities-section" style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid #eee;">
+                <h2 class="section-title">Lodge Amenities</h2>
+                <div class="amenities-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                    <div class="amenity" style="text-align: center;">
+                        <i class="fas fa-swimming-pool" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                        <h4>Infinity Pool</h4>
+                        <p>Heated pool with mountain views</p>
+                    </div>
+                    <div class="amenity" style="text-align: center;">
+                        <i class="fas fa-spa" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                        <h4>Spa & Wellness</h4>
+                        <p>Full-service spa and fitness center</p>
+                    </div>
+                    <div class="amenity" style="text-align: center;">
+                        <i class="fas fa-utensils" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                        <h4>Fine Dining</h4>
+                        <p>Restaurant & bar with local cuisine</p>
+                    </div>
+                    <div class="amenity" style="text-align: center;">
+                        <i class="fas fa-wifi" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                        <h4>High-Speed WiFi</h4>
+                        <p>Complimentary throughout property</p>
+                    </div>
+                    <div class="amenity" style="text-align: center;">
+                        <i class="fas fa-concierge-bell" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                        <h4>24/7 Concierge</h4>
+                        <p>Personalized service anytime</p>
+                    </div>
+                    <div class="amenity" style="text-align: center;">
+                        <i class="fas fa-hiking" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                        <h4>Guided Tours</h4>
+                        <p>Nature hikes and local excursions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kizaluna Lodge</h3>
+                    <p>Mountain Valley Road, Serenity Hills</p>
+                    <p>Phone: 0974387444</p>
+                    <p>Email: info@kizalunalodge.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="Rooms.html">Rooms</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kizaluna Lodge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Load all rooms on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllRooms();
+        });
+        
+        async function loadAllRooms() {
+            try {
+                const response = await fetch('http://localhost:3000/api/rooms');
+                const rooms = await response.json();
+                
+                const roomsGrid = document.getElementById('allRooms');
+                if (roomsGrid && rooms.length > 0) {
+                    roomsGrid.innerHTML = rooms.map(room => `
+                        <div class="room-card" data-type="${room.room_type}" data-capacity="${room.capacity}" data-price="${room.price_per_night}">
+                            <div class="room-image" style="background-image: url('${room.images?.[0] || 'images/default-room.jpg'}')">
+                                ${room.is_featured ? '<span class="featured-badge" style="background: var(--secondary-color); color: white; padding: 5px 15px; position: absolute; top: 10px; left: 10px; border-radius: 20px; font-size: 0.8rem;">Featured</span>' : ''}
+                            </div>
+                            <div class="room-info">
+                                <h3>${room.title}</h3>
+                                <p class="room-price">$${room.price_per_night}/night</p>
+                                <p style="color: var(--primary-color); margin-bottom: 0.5rem;">
+                                    <i class="fas fa-user"></i> ${room.capacity} guests • 
+                                    <i class="fas fa-expand"></i> ${room.size || 'N/A'} • 
+                                    <i class="fas fa-home"></i> ${room.room_type.charAt(0).toUpperCase() + room.room_type.slice(1)}
+                                </p>
+                                <p>${room.description.substring(0, 120)}...</p>
+                                <div class="room-amenities">
+                                    <span><i class="fas fa-wifi"></i></span>
+                                    <span><i class="fas fa-tv"></i></span>
+                                    <span><i class="fas fa-snowflake"></i></span>
+                                    <span><i class="fas fa-coffee"></i></span>
+                                </div>
+                                <a href="bookings.html?room=${room.id}" class="btn-primary" style="display: block; text-align: center; margin-top: 1rem;">Book Now</a>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    roomsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No rooms available at the moment.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading rooms:', error);
+                document.getElementById('allRooms').innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                        <p>Unable to load rooms. Please try again later.</p>
+                        <button onclick="loadAllRooms()" class="btn-primary">Retry</button>
+                    </div>
+                `;
+            }
+        }
+        
+        function filterRooms() {
+            const typeFilter = document.getElementById('roomTypeFilter').value;
+            const capacityFilter = document.getElementById('capacityFilter').value;
+            const priceFilter = document.getElementById('priceFilter').value;
+            
+            const roomCards = document.querySelectorAll('.room-card');
+            
+            roomCards.forEach(card => {
+                const type = card.dataset.type;
+                const capacity = parseInt(card.dataset.capacity);
+                const price = parseFloat(card.dataset.price);
+                
+                let show = true;
+                
+                // Filter by room type
+                if (typeFilter && type !== typeFilter) {
+                    show = false;
+                }
+                
+                // Filter by capacity
+                if (capacityFilter) {
+                    if (capacityFilter === '4' && capacity < 4) {
+                        show = false;
+                    } else if (capacityFilter !== '4' && capacity !== parseInt(capacityFilter)) {
+                        show = false;
+                    }
+                }
+                
+                // Filter by price
+                if (priceFilter) {
+                    const [min, max] = priceFilter === '401+' ? [401, Infinity] : priceFilter.split('-').map(Number);
+                    if (price < min || price > max) {
+                        show = false;
+                    }
+                }
+                
+                card.style.display = show ? 'block' : 'none';
+            });
+        }
+        
+        function resetFilters() {
+            document.getElementById('roomTypeFilter').value = '';
+            document.getElementById('capacityFilter').value = '';
+            document.getElementById('priceFilter').value = '';
+            
+            const roomCards = document.querySelectorAll('.room-card');
+            roomCards.forEach(card => {
+                card.style.display = 'block';
+            });
+        }
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>
